@@ -3,6 +3,7 @@ import pandas as pd
 import requests as rs
 
 file_to_ignore = ['20211129_M_B_1']
+# file_to_ignore = []
 
 def loadMeta(url_spreadsheet = 'https://docs.google.com/spreadsheets/d/1L1ji33YkJ6UJPZMAR22i2lVJndwtUUE-JSUSqi0mnN0/export?format=tsv&id=1L1ji33YkJ6UJPZMAR22i2lVJndwtUUE-JSUSqi0mnN0&gid=0'):
     
@@ -18,6 +19,7 @@ def loadMeta(url_spreadsheet = 'https://docs.google.com/spreadsheets/d/1L1ji33Yk
     meta = meta[~meta['File'].isin(file_to_ignore)]
     return meta 
 
+
 def getRecordingData(dict_data, r, return_raster = False):
     
     f = dict_data[r['File']]
@@ -31,8 +33,10 @@ def getRecordingData(dict_data, r, return_raster = False):
         selected_key = selected_key[-1]
     return dict_data[r['File']][selected_key]
 
+
 def moving_average(x, w):
     return np.convolve(x, np.ones(w), 'valid') / w
+
 
 #Return the data from a kymo file (.mat)
 def getDataKymo(cur_file):
@@ -45,7 +49,9 @@ def getDataKymo(cur_file):
     if not len(valid_keys) == 1:
         sys.exit('Issue with the number of valid keys')
     
+    data = cur_file[valid_keys[0]]
     return (data)
+
 
 def movingZscore(signal, half_window_size = 25, std_whole_recording = False):
     
